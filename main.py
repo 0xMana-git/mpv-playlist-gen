@@ -1,7 +1,10 @@
 import sys
 import subprocess
+import os
 
-
+whitelisted_exts = ["mp3", "mp4", "flac", "wav", "ogg", "opus"]
+def get_ext(line):
+    return line.split(".")[-1]
 def main():
     args_len = len(sys.argv) - 1
     if args_len <= 2:
@@ -26,17 +29,22 @@ def main():
             
             if not song in line.split("/")[-1].lower():
                 continue
+            if(os.path.isdir(line)):
+                continue
+            if not get_ext(line) in whitelisted_exts:
+                continue
             found.append(line)
         if len(found) == 0:
             print(f"Unable to find {song}. Skipping.")
             continue
         idx = 0
         if len(found) > 1:
-            print(f"Ambiguous song name \"{song}\". Input index to choose which song you want included. ")
+            print(f"\nAmbiguous song name \"{song}\". Input index to choose which song you want included. ")
             for j in range(len(found)):
                 print(f"{j}: {found[j].split("/")[-1]}")
-            input("Index: ")
+            idx = int(input("Index: "))
         song_chosen = found[idx] 
+        print(f"Selected {song_chosen}.")
         songs_path_list.append(song_chosen)
     
     with open(out_file, "w+") as f:
