@@ -2,7 +2,7 @@ import sys
 import subprocess
 import os
 
-whitelisted_exts = ["mp3", "mp4", "flac", "wav", "ogg", "opus"]
+whitelisted_exts = ["mp3", "mp4", "flac", "wav", "ogg", "opus", "aac"]
 def get_ext(line):
     return line.split(".")[-1]
 def main():
